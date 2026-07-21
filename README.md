@@ -1,4 +1,6 @@
-# LOCTIS
+<p align="center">
+  <img src="banner-LocTis/banner-logo.png" width="100%">
+</p>
 
 🚧 **Status:** In Development
 
