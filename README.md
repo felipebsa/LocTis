@@ -1,5 +1,5 @@
 <p align="center">
-  <img src=".github/banner-logo.png" width="100%">
+  <img src=".github/assets/banner-logo.png" width="100%">
 </p>
 
 🚧 **Status:** In Development
