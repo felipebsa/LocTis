@@ -57,8 +57,8 @@ Rather than being just another CRUD project, LOCTIS aims to explore concepts com
 
 ### Infrastructure
 
-- [ ] PostgreSQL
-- [ ] Alembic migrations
+- [x] PostgreSQL
+- [x] Alembic migrations
 - [ ] Docker / Docker Compose
 - [ ] Automated tests with pytest
 - [ ] Pagination and filtering
@@ -81,7 +81,8 @@ Landlord
 │
 ├── Properties
 ├── Clients
-└── Contracts
+├── Contracts
+└── Services
 ```
 
 ### Landlord
@@ -103,6 +104,10 @@ Represents a tenant linked to a landlord.
 ### Contract
 
 Represents the rental agreement connecting a landlord, a property, and a client.
+
+### Service
+
+Represents a service (maintenance, repair, etc.) linked to a landlord and a property.
 
 ---
 
@@ -131,17 +136,25 @@ Represents the rental agreement connecting a landlord, a property, and a client.
 ```
 backend/
 │
-├── app/
-│   ├── api/
-│   ├── core/
-│   ├── database/
-│   ├── models/
-│   ├── schemas/
-│   ├── services/
-│   └── repositories/
-│
+├── core/
+│   ├── enums.py
+│   └── tenant.py
+├── models/
+│   ├── __init__.py
+│   ├── landlord.py
+│   ├── property.py
+│   ├── client.py
+│   ├── contract.py
+│   └── service.py
+├── routes/
+│   └── __init__.py
+├── schemas/
+│   ├── __init__.py
+│   └── landlord.py
 ├── tests/
 ├── alembic/
+├── database.py
+├── main.py
 └── requirements.txt
 ```
 
@@ -167,10 +180,10 @@ Setup instructions will be added once the base architecture is complete.
 
 ## Roadmap
 
-- [ ] Base project architecture
-- [ ] Database models
+- [x] Base project architecture
+- [x] Database models
 - [ ] Authentication
-- [ ] Multi-tenancy
+- [x] Multi-tenancy (data isolation via `landlord_id`)
 - [ ] CRUD endpoints
 - [ ] Automated tests
 - [ ] Docker environment
@@ -183,4 +196,4 @@ Setup instructions will be added once the base architecture is complete.
 
 LOCTIS is currently under active development.
 
-The current milestone focuses on establishing the project's architecture, authentication system, multi-tenant data isolation, and database layer before implementing business features.
+The database layer is complete: all core models (Landlord, Property, Client, Contract, Service) are defined with multi-tenant isolation, and the initial Alembic migration has been applied. Pydantic schemas are in progress, starting with authentication-related models, ahead of building the JWT auth flow and CRUD routes.
