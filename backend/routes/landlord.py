@@ -7,7 +7,7 @@ from core.security import verify_password, create_access_token
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
-@router.post("/landlord/login")
+@router.post("/login")
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     landlord = db.query(Landlord).filter(Landlord.email == form_data.username).first()
 
