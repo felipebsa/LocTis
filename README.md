@@ -35,9 +35,9 @@ Rather than being just another CRUD project, LOCTIS aims to explore concepts com
 
 ### Authentication
 
-- [ ] JWT Authentication
-- [ ] Password hashing
-- [ ] Protected routes
+- [x] JWT Authentication
+- [x] Password hashing
+- [x] Protected routes
 
 ### Property Management
 
