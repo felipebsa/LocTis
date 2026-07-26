@@ -1,17 +1,24 @@
-from sqlalchemy.orm import Mapped, mapped_column
-from database import Base
-from datetime import datetime
-from sqlalchemy import func, ForeignKey, Enum as SQLEnum
-from core.enums import PropertyKind, PropertyStatus
+from fastapi import APIRouter, HTTPException, Depends
+from sqlalchemy.orm import Session
+from sqlalchemy import select, or_
+from schemas.property import SchemaPropertyCreate, SchemaPropertyResponse, SchemaPropertyStatus
+from models.property import Property
+from database import get_db 
+from core.security import get_current_user
 
-class Property(Base):
-    __tablename__ = "properties"
+router = APIRouter(prefix="/property", tags=["property"])
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    landlord_id: Mapped[int] = mapped_column(ForeignKey("landlords.id"))
-    addres: Mapped[str] = mapped_column()
-    cep: Mapped[str] = mapped_column()
-    kind: Mapped[PropertyKind] = mapped_column(SQLEnum(PropertyKind)) #enum
-    status: Mapped[PropertyStatus] = mapped_column(SQLEnum(PropertyStatus)) #enum
-    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
-
+@router.post("/register", status_code=201, response_model=SchemaPropertyResponse)
+def property_create(property: SchemaPropertyCreate, db: Session = Depends(get_db), cl=Depends(get_current_user)):
+    # cl = current_landlord (locador autenticado)
+    db_property = Property(
+        landlord_id = cl.id,
+        address = property.address,
+        cep = property.cep,
+        kind = property.kind,
+        status = property.status
+    )
+    db.add(db_property)
+    db.commit()
+    db.refresh(db_property)
+    return db_property
