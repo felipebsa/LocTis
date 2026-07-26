@@ -8,6 +8,12 @@ class SchemaPropertyCreate(BaseModel):
     kind: PropertyKind
     status: PropertyStatus
 
+class SchemaPropertyUpdate(BaseModel):
+    address: str
+    cep: str
+    kind: PropertyKind
+    status: PropertyStatus
+
 class SchemaPropertyStatus(BaseModel):
     status: PropertyStatus
 

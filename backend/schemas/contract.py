@@ -12,6 +12,15 @@ class SchemaContractCreate(BaseModel):
     status: ContractStatus
     extra_data: Optional[dict]
 
+class SchemaCOntractUpdate(BaseModel):
+    property_id: int
+    client_id: int
+    value: float
+    start_date: datetime
+    end_date: datetime
+    status: ContractStatus
+    extra_data: Optional[dict]
+
 class SchemaContractStatus(BaseModel):
     status: ContractStatus
 

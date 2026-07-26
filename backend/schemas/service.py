@@ -9,6 +9,13 @@ class SchemaServiceCreate(BaseModel):
     value: float
     status: ServiceStatus
 
+class SchemaServiceUpdate(BaseModel):
+    property_id: int
+    name: str
+    description: str
+    value: float
+    status: ServiceStatus
+
 class SchemaServiceStatus(BaseModel):
     status: ServiceStatus
 

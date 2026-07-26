@@ -8,6 +8,11 @@ class SchemaClientCreate(BaseModel):
     email: Optional[str]
     phone: Optional[str]
 
+class SchemaClientUpdate(BaseModel):
+    name: str
+    cpf: str
+    email: Optional[str]
+    phone: Optional[str]
 class SchemaClientResponse(BaseModel):
     id: int
     landlord_id: int
