@@ -69,7 +69,7 @@ Rather than being just another CRUD project, LOCTIS aims to explore concepts com
 - Payment tracking
 - Contract PDF storage
 - Calendar view
-- Notes per entity
+- Notes per entity (generic polymorphic notes system)
 - Rental terminology helper
 
 ---
@@ -138,6 +138,7 @@ backend/
 │
 ├── core/
 │   ├── enums.py
+│   ├── security.py
 │   └── tenant.py
 ├── models/
 │   ├── __init__.py
@@ -147,10 +148,16 @@ backend/
 │   ├── contract.py
 │   └── service.py
 ├── routes/
-│   └── __init__.py
+│   ├── __init__.py
+│   ├── auth.py
+│   └── property.py
 ├── schemas/
 │   ├── __init__.py
-│   └── landlord.py
+│   ├── landlord.py
+│   ├── property.py
+│   ├── client.py
+│   ├── contract.py
+│   └── service.py
 ├── tests/
 ├── alembic/
 ├── database.py
@@ -182,7 +189,7 @@ Setup instructions will be added once the base architecture is complete.
 
 - [x] Base project architecture
 - [x] Database models
-- [ ] Authentication
+- [x] Authentication
 - [x] Multi-tenancy (data isolation via `landlord_id`)
 - [ ] CRUD endpoints
 - [ ] Automated tests
@@ -196,4 +203,4 @@ Setup instructions will be added once the base architecture is complete.
 
 LOCTIS is currently under active development.
 
-The database layer is complete: all core models (Landlord, Property, Client, Contract, Service) are defined with multi-tenant isolation, and the initial Alembic migration has been applied. Pydantic schemas are in progress, starting with authentication-related models, ahead of building the JWT auth flow and CRUD routes.
+The database layer and authentication are complete: all core models (Landlord, Property, Client, Contract, Service) are defined with multi-tenant isolation, JWT authentication is implemented with protected routes, and Pydantic schemas (create, update, response) are done for every entity. The first CRUD endpoint (`POST /property/register`) is live, with the remaining Property endpoints and the other entities' routes in progress.
