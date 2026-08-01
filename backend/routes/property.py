@@ -34,7 +34,7 @@ def property_get_all(db: Session = Depends(get_db), cl=Depends(get_current_user)
 @router.get("/get/id/{id}", response_model=SchemaPropertyResponse)
 def property_get_by_id(id: int, db: Session = Depends(get_db), cl=Depends(get_current_user)):
     query = select(Property).where(and_(Property.id == id, Property.landlord_id==cl.id))
-    db_property = db.execute(query).scalars().first()
+    db_property = db.execute(query).scalar_one_or_none()
     if not db_property:
         raise HTTPException(status_code=404, detail="Property not found")
     return db_property
@@ -48,7 +48,7 @@ def property_get_by_status(status: PropertyStatus, db: Session = Depends(get_db)
 @router.delete("/delete/{id}", status_code=204)
 def delete_property(id: int, db: Session = Depends(get_db), cl=Depends(get_current_user)):
     query = select(Property).where(and_(Property.id == id, Property.landlord_id==cl.id))
-    db_property = db.execute(query).scalars().first()
+    db_property = db.execute(query).scalar_one_or_none()
     if not db_property:
         raise HTTPException(status_code=404, detail="Property not found")
     db.delete(db_property)
@@ -58,7 +58,7 @@ def delete_property(id: int, db: Session = Depends(get_db), cl=Depends(get_curre
 @router.put("/update/put/{id}", response_model=SchemaPropertyResponse)
 def update_by_put_property(id: int, property: SchemaPropertyUpdate, db: Session = Depends(get_db), cl=Depends(get_current_user)):
     query = select(Property).where(and_(Property.id == id, Property.landlord_id==cl.id))
-    db_property = db.execute(query).scalars().first()
+    db_property = db.execute(query).scalar_one_or_none()
     if not db_property:
         raise HTTPException(status_code=404, detail="Property not found")
     db_property.address = property.address
@@ -72,7 +72,7 @@ def update_by_put_property(id: int, property: SchemaPropertyUpdate, db: Session 
 @router.patch("/update/patch/{id}", response_model=SchemaPropertyResponse)
 def update_status_patch_property(id: int, property: SchemaPropertyStatus, db: Session = Depends(get_db), cl=Depends(get_current_user)):
     query = select(Property).where(and_(Property.id == id, Property.landlord_id==cl.id))
-    db_property = db.execute(query).scalars().first()
+    db_property = db.execute(query).scalar_one_or_none()
     if not db_property:
         raise HTTPException(status_code=404, detail="Property not found")
     db_property.status = property.status
