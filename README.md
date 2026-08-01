@@ -41,8 +41,13 @@ Rather than being just another CRUD project, LOCTIS aims to explore concepts com
 
 ### Property Management
 
-- [ ] Property CRUD
-- [ ] Residential and commercial properties
+- [x] Create property
+- [x] List all properties
+- [x] Get property by ID
+- [x] Get properties by status
+- [x] Update property (PUT / PATCH)
+- [x] Delete property
+- [ ] Residential and commercial properties (custom fields)
 - [ ] Custom property fields (JSONB)
 
 ### Client Management
@@ -51,9 +56,10 @@ Rather than being just another CRUD project, LOCTIS aims to explore concepts com
 
 ### Contract Management
 
-- [ ] Contract CRUD
-- [ ] Property ↔ Client relationship
-- [ ] Rental values and dates
+- [x] Contract CRUD (create, list all, get by ID, get by status, update PUT/PATCH, delete)
+- [x] Property ↔ Client relationship
+- [x] Rental values and dates
+- [x] Cross-tenant ownership validation on referenced Property/Client (FK ownership check)
 
 ### Infrastructure
 
@@ -103,7 +109,7 @@ Represents a tenant linked to a landlord.
 
 ### Contract
 
-Represents the rental agreement connecting a landlord, a property, and a client.
+Represents the rental agreement connecting a landlord, a property, and a client. Ownership of the referenced Property and Client is validated against the authenticated landlord on every write operation, preventing cross-tenant data leakage.
 
 ### Service
 
@@ -150,7 +156,8 @@ backend/
 ├── routes/
 │   ├── __init__.py
 │   ├── auth.py
-│   └── property.py
+│   ├── property.py
+│   └── contract.py
 ├── schemas/
 │   ├── __init__.py
 │   ├── landlord.py
@@ -191,7 +198,10 @@ Setup instructions will be added once the base architecture is complete.
 - [x] Database models
 - [x] Authentication
 - [x] Multi-tenancy (data isolation via `landlord_id`)
-- [ ] CRUD endpoints
+- [x] Property CRUD endpoints
+- [x] Contract CRUD endpoints
+- [ ] Client CRUD endpoints
+- [ ] Service CRUD endpoints
 - [ ] Automated tests
 - [ ] Docker environment
 - [ ] Documentation
@@ -203,4 +213,6 @@ Setup instructions will be added once the base architecture is complete.
 
 LOCTIS is currently under active development.
 
-The database layer and authentication are complete: all core models (Landlord, Property, Client, Contract, Service) are defined with multi-tenant isolation, JWT authentication is implemented with protected routes, and Pydantic schemas (create, update, response) are done for every entity. The first CRUD endpoint (`POST /property/register`) is live, with the remaining Property endpoints and the other entities' routes in progress.
+The database layer and authentication are complete: all core models (Landlord, Property, Client, Contract, Service) are defined with multi-tenant isolation, JWT authentication is implemented with protected routes, and Pydantic schemas (create, update, response) are done for every entity.
+
+Property and Contract now have their full set of CRUD endpoints (create, list all, get by ID, get by status, update via PUT/PATCH, delete), all scoped to the authenticated landlord. Contract endpoints additionally validate that referenced Property and Client records belong to the authenticated landlord before allowing any write, closing a cross-tenant data leakage risk. Client and Service CRUD are next in line, following the same pattern.
