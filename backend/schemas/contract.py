@@ -12,7 +12,7 @@ class SchemaContractCreate(BaseModel):
     status: ContractStatus
     extra_data: Optional[dict]
 
-class SchemaCOntractUpdate(BaseModel):
+class SchemaContractUpdate(BaseModel):
     property_id: int
     client_id: int
     value: float
