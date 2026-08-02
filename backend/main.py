@@ -17,7 +17,6 @@ from models.client import Client
 from models.contract import Contract
 
 app = FastAPI()
-Base.metadata.create_all(bind=engine)
 
 #settings Cors
 app.add_middleware(
