@@ -105,3 +105,9 @@ def update_status_patch_contract(id: int, contract: SchemaContractStatus, db: Se
     db.commit()
     db.refresh(db_contract)
     return db_contract
+
+@router.get("/get/property/{property_id}", response_model=list[SchemaContractResponse])
+def contract_get_by_property_id(property_id: int, db: Session = Depends(get_db), cl=Depends(get_current_user)):
+    query = select(Contract).where(and_(Contract.property_id == property_id, Contract.landlord_id==cl.id))
+    db_contract = db.execute(query).scalars().all()
+    return db_contract
