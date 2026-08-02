@@ -5,7 +5,6 @@ from schemas.property import SchemaPropertyCreate, SchemaPropertyResponse, Schem
 from models.property import Property
 from database import get_db 
 from core.security import get_current_user
-from typing import List
 from core.enums import PropertyStatus
 
 router = APIRouter(prefix="/property", tags=["property"])
@@ -25,7 +24,7 @@ def property_create(property: SchemaPropertyCreate, db: Session = Depends(get_db
     db.refresh(db_property)
     return db_property
 
-@router.get("/get/all", response_model=List[SchemaPropertyResponse])
+@router.get("/get/all", response_model=list[SchemaPropertyResponse])
 def property_get_all(db: Session = Depends(get_db), cl=Depends(get_current_user)):
     query = select(Property).where(Property.landlord_id==cl.id)
     db_property = db.execute(query).scalars().all()
@@ -39,7 +38,7 @@ def property_get_by_id(id: int, db: Session = Depends(get_db), cl=Depends(get_cu
         raise HTTPException(status_code=404, detail="Property not found")
     return db_property
 
-@router.get("/get/status/{status}", response_model=List[SchemaPropertyResponse])
+@router.get("/get/status/{status}", response_model=list[SchemaPropertyResponse])
 def property_get_by_status(status: PropertyStatus, db: Session = Depends(get_db), cl=Depends(get_current_user)):
     query = select(Property).where(and_(Property.status == status, Property.landlord_id==cl.id))
     db_property = db.execute(query).scalars().all()
