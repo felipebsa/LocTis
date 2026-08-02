@@ -41,25 +41,27 @@ Rather than being just another CRUD project, LOCTIS aims to explore concepts com
 
 ### Property Management
 
-- [x] Create property
-- [x] List all properties
-- [x] Get property by ID
-- [x] Get properties by status
-- [x] Update property (PUT / PATCH)
-- [x] Delete property
+- [x] Property CRUD (create, list all, get by ID, get by status, update PUT/PATCH, delete)
 - [ ] Residential and commercial properties (custom fields)
 - [ ] Custom property fields (JSONB)
 
 ### Client Management
 
-- [ ] Client CRUD
+- [x] Client CRUD (create, list all, get by ID, update PUT, delete)
 
 ### Contract Management
 
 - [x] Contract CRUD (create, list all, get by ID, get by status, update PUT/PATCH, delete)
+- [x] Get contracts by property
 - [x] Property ↔ Client relationship
 - [x] Rental values and dates
 - [x] Cross-tenant ownership validation on referenced Property/Client (FK ownership check)
+
+### Service Management
+
+- [x] Service CRUD (create, list all, get by ID, get by status, update PUT/PATCH, delete)
+- [x] Get services by property
+- [x] Get services by property and status
 
 ### Infrastructure
 
@@ -157,7 +159,9 @@ backend/
 │   ├── __init__.py
 │   ├── auth.py
 │   ├── property.py
-│   └── contract.py
+│   ├── client.py
+│   ├── contract.py
+│   └── service.py
 ├── schemas/
 │   ├── __init__.py
 │   ├── landlord.py
@@ -199,9 +203,9 @@ Setup instructions will be added once the base architecture is complete.
 - [x] Authentication
 - [x] Multi-tenancy (data isolation via `landlord_id`)
 - [x] Property CRUD endpoints
+- [x] Client CRUD endpoints
 - [x] Contract CRUD endpoints
-- [ ] Client CRUD endpoints
-- [ ] Service CRUD endpoints
+- [x] Service CRUD endpoints
 - [ ] Automated tests
 - [ ] Docker environment
 - [ ] Documentation
@@ -213,6 +217,8 @@ Setup instructions will be added once the base architecture is complete.
 
 LOCTIS is currently under active development.
 
-The database layer and authentication are complete: all core models (Landlord, Property, Client, Contract, Service) are defined with multi-tenant isolation, JWT authentication is implemented with protected routes, and Pydantic schemas (create, update, response) are done for every entity.
+The database layer, authentication, and core CRUD API are complete: all models (Landlord, Property, Client, Contract, Service) are defined with multi-tenant isolation, JWT authentication is implemented with protected routes, and every entity has its full set of endpoints (create, list all, get by ID, update via PUT/PATCH where applicable, delete), all scoped to the authenticated landlord.
 
-Property and Contract now have their full set of CRUD endpoints (create, list all, get by ID, get by status, update via PUT/PATCH, delete), all scoped to the authenticated landlord. Contract endpoints additionally validate that referenced Property and Client records belong to the authenticated landlord before allowing any write, closing a cross-tenant data leakage risk. Client and Service CRUD are next in line, following the same pattern.
+Contract and Service additionally validate that any referenced Property/Client belongs to the authenticated landlord before allowing a write, closing a cross-tenant data leakage risk. Service also exposes convenience endpoints to list by property and by property + status, avoiding the need for client-side filtering.
+
+Next steps: automated tests (pytest), Docker environment, and the polymorphic Notes feature.
