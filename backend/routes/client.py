@@ -11,6 +11,7 @@ router = APIRouter(prefix="/client", tags=["clients"])
 @router.post("/register", status_code=201,response_model=SchemaClientResponse)
 def client_create(client: SchemaClientCreate, db: Session = Depends(get_db), cl=Depends(get_current_user)):
     db_client = Client(
+        landlord_id = cl.id,
         name = client.name,
         cpf = client.cpf,
         email = client.email,
