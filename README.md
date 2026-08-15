@@ -38,6 +38,7 @@ Rather than being just another CRUD project, LOCTIS aims to explore concepts com
 - [x] JWT Authentication
 - [x] Password hashing
 - [x] Protected routes
+- [x] Landlord registration endpoint
 
 ### Property Management
 
@@ -157,7 +158,7 @@ backend/
 │   └── service.py
 ├── routes/
 │   ├── __init__.py
-│   ├── auth.py
+│   ├── landlord.py
 │   ├── property.py
 │   ├── client.py
 │   ├── contract.py
@@ -196,6 +197,25 @@ Setup instructions will be added once the base architecture is complete.
 
 ---
 
+## Manual Testing
+
+The core flow and the main security-critical paths were manually verified end-to-end via Swagger UI (2026-08-15):
+
+**Happy path**
+- [x] Landlord registration → login → JWT issuance
+- [x] Property creation, scoped to the authenticated landlord
+- [x] Client creation, scoped to the authenticated landlord
+- [x] Contract creation referencing a valid Property/Client owned by the landlord
+
+**Security / risk scenarios**
+- [x] Cross-tenant ownership on write: creating a Contract with a `property_id`/`client_id` owned by a different landlord returns `404` (not `500`, not `201`)
+- [x] `CheckConstraint` enforcement: creating a Contract with `end_date` earlier than `start_date` is rejected at the database level
+- [x] Cross-tenant read isolation: fetching a Contract by ID that belongs to a different landlord returns `404`
+
+Automated coverage for these scenarios (pytest) is a planned next step — see Roadmap.
+
+---
+
 ## Roadmap
 
 - [x] Base project architecture
@@ -206,6 +226,7 @@ Setup instructions will be added once the base architecture is complete.
 - [x] Client CRUD endpoints
 - [x] Contract CRUD endpoints
 - [x] Service CRUD endpoints
+- [x] Manual end-to-end testing (happy path + security scenarios)
 - [ ] Automated tests
 - [ ] Docker environment
 - [ ] Documentation
@@ -220,5 +241,7 @@ LOCTIS is currently under active development.
 The database layer, authentication, and core CRUD API are complete: all models (Landlord, Property, Client, Contract, Service) are defined with multi-tenant isolation, JWT authentication is implemented with protected routes, and every entity has its full set of endpoints (create, list all, get by ID, update via PUT/PATCH where applicable, delete), all scoped to the authenticated landlord.
 
 Contract and Service additionally validate that any referenced Property/Client belongs to the authenticated landlord before allowing a write, closing a cross-tenant data leakage risk. Service also exposes convenience endpoints to list by property and by property + status, avoiding the need for client-side filtering.
+
+A dedicated landlord registration endpoint (`POST /auth/register`) was added, and the full happy path plus the main cross-tenant security scenarios were manually verified end-to-end via Swagger — see [Manual Testing](#manual-testing).
 
 Next steps: automated tests (pytest), Docker environment, and the polymorphic Notes feature.
