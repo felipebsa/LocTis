@@ -226,7 +226,7 @@ Automated coverage for these scenarios (pytest) is a planned next step — see R
 - [x] Client CRUD endpoints
 - [x] Contract CRUD endpoints
 - [x] Service CRUD endpoints
-- [x] Manual end-to-end testing (happy path + security scenarios)
+- [x] Manual end-to-end testing
 - [ ] Automated tests
 - [ ] Docker environment
 - [ ] Documentation
