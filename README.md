@@ -43,7 +43,7 @@ Rather than being just another CRUD project, LOCTIS aims to explore concepts com
 
 - [x] Property CRUD (create, list all, get by ID, get by status, update PUT/PATCH, delete)
 - [ ] Residential and commercial properties (custom fields)
-- [ ] Custom property fields (JSONB)
+- [x] Custom property fields (JSONB)
 
 ### Client Management
 
