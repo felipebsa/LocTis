@@ -3,7 +3,8 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from database import get_db
 from models.landlord import Landlord
-from core.security import verify_password, create_access_token
+from core.security import verify_password, create_access_token, hash_password
+from schemas.landlord import SchemaLandlordCreate, SchemaLandlordResponse
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -16,3 +17,19 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
 
     token = create_access_token(landlord.id)
     return {"access_token": token, "token_type": "bearer"}
+
+@router.post("/register", status_code=201, response_model=SchemaLandlordResponse)
+def create_landlord(landlord: SchemaLandlordCreate, db: Session = Depends(get_db)):
+    existing_landlord = db.query(Landlord).filter(Landlord.email == landlord.email).first()
+    if existing_landlord:
+        raise HTTPException(status_code=409, detail="Email already registered")
+    hash_created = hash_password(landlord.password)
+    post_landlord = Landlord(
+        name = landlord.name,
+        email = landlord.email,
+        password_hash = hash_created
+    )
+    db.add(post_landlord)
+    db.commit()
+    db.refresh(post_landlord)
+    return post_landlord
