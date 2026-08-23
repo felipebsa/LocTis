@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from database import Base
+from backend.app.database import Base
 from datetime import datetime
 from sqlalchemy import func, ForeignKey, Enum as SQLEnum, CheckConstraint
-from core.enums import ContractStatus
+from backend.app.core.enums import ContractStatus
 from sqlalchemy.dialects.postgresql import JSONB
 from typing import Optional
 

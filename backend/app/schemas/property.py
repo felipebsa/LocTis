@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 from datetime import datetime
-from core.enums import PropertyKind, PropertyStatus
+from backend.app.core.enums import PropertyKind, PropertyStatus
 
 class SchemaPropertyCreate(BaseModel):
     address: str

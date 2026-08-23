@@ -7,9 +7,9 @@ import pytest
 from fastapi.testclient import TestClient
 from fastapi import FastAPI
 import os
-from database import get_db, engine, Base
-from main import app
-from routes.landlord import create_landlord, login
+from backend.app.database import get_db, engine, Base
+from backend.app.main import app
+from backend.app.routes.landlord import create_landlord, login
 
 engine = create_engine(os.getenv("DATABASE_URL_TEST"))
 client = TestClient(app)

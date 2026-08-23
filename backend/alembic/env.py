@@ -4,12 +4,12 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from dotenv import load_dotenv
 import os
-from database import Base
-from models.client import Client
-from models.contract import Contract
-from models.landlord import Landlord
-from models.property import Property
-from models.service import Service
+from backend.app.database import Base
+from backend.app.models.client import Client
+from backend.app.models.contract import Contract
+from backend.app.models.landlord import Landlord
+from backend.app.models.property import Property
+from backend.app.models.service import Service
 from alembic import context
 
 load_dotenv()

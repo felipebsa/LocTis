@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from database import Base
+from backend.app.database import Base
 from datetime import datetime
 from sqlalchemy import func, ForeignKey, Enum as SQLEnum
-from core.enums import PropertyKind, PropertyStatus
+from backend.app.core.enums import PropertyKind, PropertyStatus
 
 class Property(Base):
     __tablename__ = "properties"

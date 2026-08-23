@@ -1,7 +1,7 @@
 from pydantic import BaseModel, ConfigDict
 from typing import Optional
 from datetime import datetime
-from core.enums import ContractStatus
+from backend.app.core.enums import ContractStatus
 
 class SchemaContractCreate(BaseModel):
     property_id: int

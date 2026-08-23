@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from database import get_db
-from models.landlord import Landlord
-from core.security import verify_password, create_access_token, hash_password
-from schemas.landlord import SchemaLandlordCreate, SchemaLandlordResponse
+from backend.app.database import get_db
+from backend.app.models.landlord import Landlord
+from backend.app.core.security import verify_password, create_access_token, hash_password
+from backend.app.schemas.landlord import SchemaLandlordCreate, SchemaLandlordResponse
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 

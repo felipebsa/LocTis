@@ -1,11 +1,11 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import select, and_
-from schemas.property import SchemaPropertyCreate, SchemaPropertyResponse, SchemaPropertyStatus, SchemaPropertyUpdate
-from models.property import Property
-from database import get_db 
-from core.security import get_current_user
-from core.enums import PropertyStatus
+from backend.app.schemas.property import SchemaPropertyCreate, SchemaPropertyResponse, SchemaPropertyStatus, SchemaPropertyUpdate
+from backend.app.models.property import Property
+from backend.app.database import get_db 
+from backend.app.core.security import get_current_user
+from backend.app.core.enums import PropertyStatus
 
 router = APIRouter(prefix="/property", tags=["property"])
 
