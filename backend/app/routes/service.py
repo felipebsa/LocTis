@@ -1,12 +1,12 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import select, and_
-from backend.app.schemas.service import SchemaServiceCreate, SchemaServiceResponse, SchemaServiceUpdate, SchemaServiceStatus
-from backend.app.models.property import Property
-from backend.app.models.service import Service
-from backend.app.database import get_db 
-from backend.app.core.security import get_current_user
-from backend.app.core.enums import ServiceStatus
+from app.schemas.service import SchemaServiceCreate, SchemaServiceResponse, SchemaServiceUpdate, SchemaServiceStatus
+from app.models.property import Property
+from app.models.service import Service
+from app.database import get_db 
+from app.core.security import get_current_user
+from app.core.enums import ServiceStatus
 
 router = APIRouter(prefix="/service", tags=["service"])
 

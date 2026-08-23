@@ -1,13 +1,13 @@
 from fastapi import APIRouter, HTTPException, Depends
-from backend.app.database import get_db
-from backend.app.core.security import get_current_user
+from app.database import get_db
+from app.core.security import get_current_user
 from sqlalchemy import select, and_
 from sqlalchemy.orm import Session
-from backend.app.schemas.contract import SchemaContractCreate, SchemaContractResponse, SchemaContractStatus, SchemaContractUpdate, ContractStatus
-from backend.app.models.contract import Contract
-from backend.app.models.client import Client
-from backend.app.models.property import Property
-from backend.app.core.enums import ContractStatus
+from app.schemas.contract import SchemaContractCreate, SchemaContractResponse, SchemaContractStatus, SchemaContractUpdate, ContractStatus
+from app.models.contract import Contract
+from app.models.client import Client
+from app.models.property import Property
+from app.core.enums import ContractStatus
 
 router = APIRouter(prefix="/contract", tags=["contracts"])
 

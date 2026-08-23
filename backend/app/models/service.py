@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from backend.app.database import Base
+from app.database import Base
 from datetime import datetime
 from sqlalchemy import func, ForeignKey, Enum as SQLEnum
-from backend.app.core.enums import ServiceStatus
+from app.core.enums import ServiceStatus
 
 class Service(Base):
     __tablename__ = "services"

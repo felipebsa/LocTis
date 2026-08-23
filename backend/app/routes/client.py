@@ -1,10 +1,10 @@
 from fastapi import APIRouter, HTTPException, Depends
-from backend.app.database import get_db
-from backend.app.core.security import get_current_user
+from app.database import get_db
+from app.core.security import get_current_user
 from sqlalchemy import select, and_
 from sqlalchemy.orm import Session
-from backend.app.schemas.client import SchemaClientCreate, SchemaClientResponse, SchemaClientUpdate
-from backend.app.models.client import Client
+from app.schemas.client import SchemaClientCreate, SchemaClientResponse, SchemaClientUpdate
+from app.models.client import Client
 
 router = APIRouter(prefix="/client", tags=["clients"])
 

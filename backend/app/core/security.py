@@ -5,10 +5,10 @@ from fastapi import Depends
 import os
 from dotenv import load_dotenv
 from passlib.context import CryptContext
-from backend.app.database import get_db
+from app.database import get_db
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from backend.app.models.landlord import Landlord
+from app.models.landlord import Landlord
 from sqlalchemy import select
 
 load_dotenv()

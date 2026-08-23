@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 from datetime import datetime
-from backend.app.core.enums import ServiceStatus
+from app.core.enums import ServiceStatus
 
 class SchemaServiceCreate(BaseModel):
     property_id: int
