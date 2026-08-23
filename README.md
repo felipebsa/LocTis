@@ -145,35 +145,40 @@ Represents a service (maintenance, repair, etc.) linked to a landlord and a prop
 ```
 backend/
 │
-├── core/
-│   ├── enums.py
-│   ├── security.py
-│   └── tenant.py
-├── models/
-│   ├── __init__.py
-│   ├── landlord.py
-│   ├── property.py
-│   ├── client.py
-│   ├── contract.py
-│   └── service.py
-├── routes/
-│   ├── __init__.py
-│   ├── landlord.py
-│   ├── property.py
-│   ├── client.py
-│   ├── contract.py
-│   └── service.py
-├── schemas/
-│   ├── __init__.py
-│   ├── landlord.py
-│   ├── property.py
-│   ├── client.py
-│   ├── contract.py
-│   └── service.py
+├── app/
+│   ├── core/
+│   │   ├── enums.py
+│   │   ├── security.py
+│   │   └── tenant.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── landlord.py
+│   │   ├── property.py
+│   │   ├── client.py
+│   │   ├── contract.py
+│   │   └── service.py
+│   ├── routes/
+│   │   ├── __init__.py
+│   │   ├── landlord.py
+│   │   ├── property.py
+│   │   ├── client.py
+│   │   ├── contract.py
+│   │   └── service.py
+│   ├── schemas/
+│   │   ├── __init__.py
+│   │   ├── landlord.py
+│   │   ├── property.py
+│   │   ├── client.py
+│   │   ├── contract.py
+│   │   └── service.py
+│   ├── database.py
+│   └── main.py
 ├── tests/
+│   ├── __init__.py
+│   ├── conftest.py
+│   └── test_auth.py
 ├── alembic/
-├── database.py
-├── main.py
+├── alembic.ini
 └── requirements.txt
 ```
 
@@ -226,8 +231,8 @@ Automated coverage for these scenarios (pytest) is a planned next step — see R
 - [x] Client CRUD endpoints
 - [x] Contract CRUD endpoints
 - [x] Service CRUD endpoints
-- [x] Manual end-to-end testing
-- [ ] Automated tests
+- [x] Manual end-to-end testing (happy path + security scenarios)
+- [~] Automated tests (auth register covered, more in progress)
 - [ ] Docker environment
 - [ ] Documentation
 - [ ] Frontend
