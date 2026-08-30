@@ -31,3 +31,10 @@ def override_get_db():
     finally:
         db.rollback()
         db.close()
+
+@pytest.fixture
+def auth_headers():
+    client.post("/auth/register", json={"name": "roberto", "email": "roberto123@gmail.com", "password": "123456"})
+    response = client.post("/auth/login", data={"username": "roberto123@gmail.com", "password": "123456"})
+    token = response.json()["access_token"]
+    return {"Authorization": f"Bearer {token}"}
