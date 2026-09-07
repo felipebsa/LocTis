@@ -232,7 +232,7 @@ Automated coverage for these scenarios (pytest) is a planned next step — see R
 - [x] Contract CRUD endpoints
 - [x] Service CRUD endpoints
 - [x] Manual end-to-end testing (happy path + security scenarios)
-- [~] Automated tests (auth register covered, more in progress)
+- [~] Automated tests (pytest)
 - [ ] Docker environment
 - [ ] Documentation
 - [ ] Frontend
