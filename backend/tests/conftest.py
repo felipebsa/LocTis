@@ -61,7 +61,7 @@ def created_property(auth_headers):
 def created_client(auth_headers):
     payload = {
         "name": "Fernanda Souza",
-        "cpf": "123.456.789-00",
+        "cpf": "12345678900",
         "email": "fernanda@gmail.com",
         "phone": "11999998888"
     }
