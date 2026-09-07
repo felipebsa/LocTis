@@ -2,7 +2,7 @@ from tests.conftest import client
 
 CLIENT_PAYLOAD = {
     "name": "Fernanda Souza",
-    "cpf": "123.456.789-00",
+    "cpf": "12345678900",
     "email": "fernanda@gmail.com",
     "phone": "11999998888"
 }
@@ -32,7 +32,7 @@ def test_update_client(auth_headers, created_client):
     client_id = created_client["id"]
     payload = {
         "name": "Fernanda Souza Lima",
-        "cpf": "123.456.789-00",
+        "cpf": "12345678900",
         "email": "fernanda.lima@gmail.com",
         "phone": "11988887777"
     }
