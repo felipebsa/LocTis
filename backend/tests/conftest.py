@@ -38,3 +38,32 @@ def auth_headers():
     response = client.post("/auth/login", data={"username": "roberto123@gmail.com", "password": "123456"})
     token = response.json()["access_token"]
     return {"Authorization": f"Bearer {token}"}
+
+@pytest.fixture
+def auth_headers_other():
+    client.post("/auth/register", json={"name": "carla", "email": "carla456@gmail.com", "password": "123456"})
+    response = client.post("/auth/login", data={"username": "carla456@gmail.com", "password": "123456"})
+    token = response.json()["access_token"]
+    return {"Authorization": f"Bearer {token}"}
+
+@pytest.fixture
+def created_property(auth_headers):
+    payload = {
+        "address": "Rua das Flores, 123",
+        "cep": "01001-000",
+        "kind": "apartment",
+        "status": "available"
+    }
+    response = client.post("/property/register", json=payload, headers=auth_headers)
+    return response.json()
+
+@pytest.fixture
+def created_client(auth_headers):
+    payload = {
+        "name": "Fernanda Souza",
+        "cpf": "123.456.789-00",
+        "email": "fernanda@gmail.com",
+        "phone": "11999998888"
+    }
+    response = client.post("/client/register", json=payload, headers=auth_headers)
+    return response.json()
