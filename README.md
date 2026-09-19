@@ -69,7 +69,7 @@ Rather than being just another CRUD project, LOCTIS aims to explore concepts com
 - [x] PostgreSQL
 - [x] Alembic migrations
 - [ ] Docker / Docker Compose
-- [ ] Automated tests with pytest
+- [x] Automated tests with pytest
 - [ ] Pagination and filtering
 
 ### Future Features
