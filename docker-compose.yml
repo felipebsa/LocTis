@@ -1,0 +1,7 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: seu_usuario
+      POSTGRES_PASSWORD: sua_senha
+      POSTGRES_DB: nome_do_banco
