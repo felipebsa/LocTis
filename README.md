@@ -4,30 +4,30 @@
 
 🚧 **Status:** In Development
 
-Multi-tenant SaaS backend for landlords to manage rental properties, tenants, and contracts through a secure REST API.
+Multi-tenant SaaS backend for landlords to manage rental properties, tenants, and contracts through a REST API.
 
 ---
 
 ## Overview
 
-LOCTIS is a backend-first SaaS designed for independent landlords and small property managers.
+LOCTIS is a backend-first project for independent landlords and small property managers to manage properties, clients and contracts in one place.
 
-Each landlord has a completely isolated workspace, ensuring that properties, clients, and contracts are never shared between accounts. The API is being built with scalability, maintainability, and production-oriented backend practices in mind.
+Each landlord gets an isolated workspace — properties, clients and contracts never leak between accounts.
 
-The first version focuses entirely on the backend. A frontend application will be developed after the API reaches a stable state.
+The first version is backend-only. Frontend comes after the API is stable.
 
 ---
 
 ## Goals
 
-Rather than being just another CRUD project, LOCTIS aims to explore concepts commonly found in real production systems, including:
+This project is my way of learning concepts used in real backend systems:
 
 - Multi-tenant architecture
 - JWT authentication
 - Database migrations
 - Automated testing
 - Dockerized deployment
-- Modular and scalable project structure
+- Modular project structure
 
 ---
 
@@ -68,7 +68,7 @@ Rather than being just another CRUD project, LOCTIS aims to explore concepts com
 
 - [x] PostgreSQL
 - [x] Alembic migrations
-- [ ] Docker / Docker Compose
+- [x] Docker / Docker Compose
 - [x] Automated tests with pytest
 - [ ] Pagination and filtering
 
@@ -96,27 +96,23 @@ Landlord
 
 ### Landlord
 
-Represents the account owner.
-
-Every resource inside the system belongs to exactly one landlord, ensuring complete data isolation between users.
+The account owner. Every resource belongs to exactly one landlord — that's what keeps data isolated between users.
 
 ### Property
 
-Represents a residential or commercial property available for rent.
-
-Core attributes are stored as typed columns, while advanced or custom information is stored using a JSONB field (`extra_data`).
+A residential or commercial property available for rent. Core fields are typed columns; extra/custom data goes in a JSONB field (`extra_data`).
 
 ### Client
 
-Represents a tenant linked to a landlord.
+A tenant linked to a landlord.
 
 ### Contract
 
-Represents the rental agreement connecting a landlord, a property, and a client. Ownership of the referenced Property and Client is validated against the authenticated landlord on every write operation, preventing cross-tenant data leakage.
+The rental agreement connecting a landlord, a property and a client. Ownership of the referenced Property and Client is checked against the authenticated landlord on every write, so one landlord can't reference another's data.
 
 ### Service
 
-Represents a service (maintenance, repair, etc.) linked to a landlord and a property.
+A service (maintenance, repair, etc.) linked to a landlord and a property.
 
 ---
 
@@ -189,22 +185,37 @@ backend/
 ### Requirements
 
 - Python 3.12+
-- PostgreSQL
-- Docker
+- Docker + Docker Compose
 
 ```bash
 git clone https://github.com/felipebsa/loctis.git
-
 cd loctis
 ```
 
-Setup instructions will be added once the base architecture is complete.
+Create a `.env` in the project root:
+
+```
+POSTGRES_USER=your_user
+POSTGRES_PASSWORD=your_password
+POSTGRES_DB=loctis
+```
+
+Create `backend/.env` with `SECRET_KEY`, `ALGORITHM`, `DATABASE_URL` and `TOKEN_EXPIRED`.
+
+Then run:
+
+```bash
+docker compose up --build
+docker compose exec api alembic upgrade head
+```
+
+API available at `http://localhost:8000/docs`.
 
 ---
 
 ## Manual Testing
 
-The core flow and the main security-critical paths were manually verified end-to-end via Swagger UI (2026-08-15):
+Core flow and security-critical paths were manually verified end-to-end via Swagger UI (2026-08-15):
 
 **Happy path**
 - [x] Landlord registration → login → JWT issuance
@@ -217,7 +228,7 @@ The core flow and the main security-critical paths were manually verified end-to
 - [x] `CheckConstraint` enforcement: creating a Contract with `end_date` earlier than `start_date` is rejected at the database level
 - [x] Cross-tenant read isolation: fetching a Contract by ID that belongs to a different landlord returns `404`
 
-Automated coverage for these scenarios (pytest) is a planned next step — see Roadmap.
+Automated coverage for these scenarios (pytest) is a planned next step.
 
 ---
 
@@ -233,7 +244,7 @@ Automated coverage for these scenarios (pytest) is a planned next step — see R
 - [x] Service CRUD endpoints
 - [x] Manual end-to-end testing (happy path + security scenarios)
 - [~] Automated tests (pytest)
-- [ ] Docker environment
+- [x] Docker environment
 - [ ] Documentation
 - [ ] Frontend
 
@@ -241,12 +252,10 @@ Automated coverage for these scenarios (pytest) is a planned next step — see R
 
 ## Current Status
 
-LOCTIS is currently under active development.
+Database layer, authentication and core CRUD are done: all models (Landlord, Property, Client, Contract, Service) have multi-tenant isolation, JWT auth with protected routes, and full CRUD endpoints, all scoped to the authenticated landlord.
 
-The database layer, authentication, and core CRUD API are complete: all models (Landlord, Property, Client, Contract, Service) are defined with multi-tenant isolation, JWT authentication is implemented with protected routes, and every entity has its full set of endpoints (create, list all, get by ID, update via PUT/PATCH where applicable, delete), all scoped to the authenticated landlord.
+Contract and Service also validate that any referenced Property/Client belongs to the authenticated landlord before allowing a write. Service exposes extra endpoints to list by property and by property + status.
 
-Contract and Service additionally validate that any referenced Property/Client belongs to the authenticated landlord before allowing a write, closing a cross-tenant data leakage risk. Service also exposes convenience endpoints to list by property and by property + status, avoiding the need for client-side filtering.
+Landlord registration (`POST /auth/register`) is done, and the full happy path plus main cross-tenant security scenarios were manually verified via Swagger — see [Manual Testing](#manual-testing).
 
-A dedicated landlord registration endpoint (`POST /auth/register`) was added, and the full happy path plus the main cross-tenant security scenarios were manually verified end-to-end via Swagger — see [Manual Testing](#manual-testing).
-
-Next steps: automated tests (pytest), Docker environment, and the polymorphic Notes feature.
+Next steps: automated tests (pytest) and the polymorphic Notes feature.
