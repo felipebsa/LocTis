@@ -243,7 +243,7 @@ Automated coverage for these scenarios (pytest) is a planned next step.
 - [x] Contract CRUD endpoints
 - [x] Service CRUD endpoints
 - [x] Manual end-to-end testing (happy path + security scenarios)
-- [~] Automated tests (pytest)
+- [x] Automated tests (pytest)
 - [x] Docker environment
 - [ ] Documentation
 - [ ] Frontend
@@ -258,4 +258,4 @@ Contract and Service also validate that any referenced Property/Client belongs t
 
 Landlord registration (`POST /auth/register`) is done, and the full happy path plus main cross-tenant security scenarios were manually verified via Swagger — see [Manual Testing](#manual-testing).
 
-Next steps: automated tests (pytest) and the polymorphic Notes feature.
+Next steps: add polymorphic Notes feature.
