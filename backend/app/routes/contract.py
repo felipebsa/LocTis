@@ -8,6 +8,7 @@ from app.models.contract import Contract
 from app.models.client import Client
 from app.models.property import Property
 from app.core.enums import ContractStatus
+from sqlalchemy.exc import IntegrityError
 
 router = APIRouter(prefix="/contract", tags=["contracts"])
 
@@ -34,8 +35,12 @@ def contract_create(contract: SchemaContractCreate, db: Session = Depends(get_db
         extra_data = contract.extra_data
     )
     db.add(db_contract)
-    db.commit()
-    db.refresh(db_contract)
+    try:
+        db.commit()
+        db.refresh(db_contract)
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=400, detail="Invalid data: end_date must be greater than start_date and value must be greater than zero.")
     return db_contract
 
 @router.get("/get/all", response_model=list[SchemaContractResponse])
@@ -91,8 +96,12 @@ def update_by_put_contract(id: int, contract: SchemaContractUpdate, db: Session 
     db_contract.end_date = contract.end_date
     db_contract.status = contract.status
     db_contract.extra_data = contract.extra_data
-    db.commit()
-    db.refresh(db_contract)
+    try:
+        db.commit()
+        db.refresh(db_contract)
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=400, detail="Invalid data: end_date must be greater than start_date and value must be greater than zero.")
     return db_contract
 
 @router.patch("/update/patch/{id}", response_model=SchemaContractResponse)

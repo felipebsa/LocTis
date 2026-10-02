@@ -88,13 +88,6 @@ def test_other_landlord_cant_see(auth_headers, auth_headers_other, created_prope
     assert response.status_code == 404
 
 def test_invalid_dates(auth_headers, created_property, created_client):
-    # falta try/except na rota, por isso o erro sobe cru
-    payload = contract_payload(
-        created_property["id"],
-        created_client["id"],
-        start_date="2026-12-31T00:00:00",
-        end_date="2026-01-01T00:00:00",
-    )
-
-    with pytest.raises(IntegrityError):
-        client.post("/contract/register", json=payload, headers=auth_headers)
+    payload = contract_payload(created_property["id"], created_client["id"], start_date="2026-12-31T00:00:00", end_date="2026-01-01T00:00:00")
+    response = client.post("/contract/register", json=payload, headers=auth_headers)
+    assert response.status_code == 400
