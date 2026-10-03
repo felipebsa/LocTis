@@ -26,7 +26,7 @@ def test_get_all_services(auth_headers, created_property):
     client.post("/service/register", json=service_payload(created_property["id"]), headers=auth_headers)
     response = client.get("/service/get/all", headers=auth_headers)
     assert response.status_code == 200
-    assert len(response.json()) == 1
+    assert len(response.json()["items"]) == 1
 
 def test_get_service_by_id(auth_headers, created_property):
     created = client.post("/service/register", json=service_payload(created_property["id"]), headers=auth_headers).json()
@@ -37,13 +37,13 @@ def test_get_service_by_status(auth_headers, created_property):
     client.post("/service/register", json=service_payload(created_property["id"]), headers=auth_headers)
     response = client.get("/service/get/status/pending", headers=auth_headers)
     assert response.status_code == 200
-    assert all(s["status"] == "pending" for s in response.json())
+    assert all(s["status"] == "pending" for s in response.json()["items"])
 
 def test_get_services_by_property(auth_headers, created_property):
     client.post("/service/register", json=service_payload(created_property["id"]), headers=auth_headers)
     response = client.get(f"/service/get/property/{created_property['id']}", headers=auth_headers)
     assert response.status_code == 200
-    assert len(response.json()) == 1
+    assert len(response.json()["items"]) == 1
 
 def test_get_services_by_property_status(auth_headers, created_property):
     client.post("/service/register", json=service_payload(created_property["id"]), headers=auth_headers)
@@ -52,7 +52,7 @@ def test_get_services_by_property_status(auth_headers, created_property):
         headers=auth_headers
     )
     assert response.status_code == 200
-    assert len(response.json()) == 1
+    assert len(response.json()["items"]) == 1
 
 def test_update_service_put(auth_headers, created_property):
     created = client.post("/service/register", json=service_payload(created_property["id"]), headers=auth_headers).json()
@@ -80,3 +80,9 @@ def test_other_landlord_cant_see(auth_headers, auth_headers_other, created_prope
     created = client.post("/service/register", json=service_payload(created_property["id"]), headers=auth_headers).json()
     response = client.get(f"/service/get/id/{created['id']}", headers=auth_headers_other)
     assert response.status_code == 404
+
+def test_filter_services_by_status_and_property(auth_headers, created_property):
+    client.post("/service/register", json=service_payload(created_property["id"]), headers=auth_headers)
+    client.post("/service/register", json=service_payload(created_property["id"], status="completed"), headers=auth_headers)
+    response = client.get(f"/service/get/all?status=completed&property_id={created_property['id']}", headers=auth_headers)
+    assert [s["status"] for s in response.json()["items"]] == ["completed"]

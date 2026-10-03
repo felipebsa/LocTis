@@ -37,7 +37,7 @@ def test_get_all_contracts(auth_headers, created_property, created_client):
 
     response = client.get("/contract/get/all", headers=auth_headers)
     assert response.status_code == 200
-    assert len(response.json()) == 1
+    assert len(response.json()["items"]) == 1
 
 def test_get_contract_by_id(auth_headers, created_property, created_client):
     payload = contract_payload(created_property["id"], created_client["id"])
@@ -52,7 +52,7 @@ def test_get_contract_by_status(auth_headers, created_property, created_client):
 
     response = client.get("/contract/get/status/active", headers=auth_headers)
     assert response.status_code == 200
-    assert all(c["status"] == "active" for c in response.json())
+    assert all(c["status"] == "active" for c in response.json()["items"])
 
 def test_get_contracts_by_property(auth_headers, created_property, created_client):
     payload = contract_payload(created_property["id"], created_client["id"])
@@ -60,7 +60,7 @@ def test_get_contracts_by_property(auth_headers, created_property, created_clien
 
     response = client.get(f"/contract/get/property/{created_property['id']}", headers=auth_headers)
     assert response.status_code == 200
-    assert len(response.json()) == 1
+    assert len(response.json()["items"]) == 1
 
 def test_update_contract_status(auth_headers, created_property, created_client):
     payload = contract_payload(created_property["id"], created_client["id"])
@@ -91,3 +91,9 @@ def test_invalid_dates(auth_headers, created_property, created_client):
     payload = contract_payload(created_property["id"], created_client["id"], start_date="2026-12-31T00:00:00", end_date="2026-01-01T00:00:00")
     response = client.post("/contract/register", json=payload, headers=auth_headers)
     assert response.status_code == 400
+
+def test_filter_contracts_by_status_and_client(auth_headers, created_property, created_client):
+    client.post("/contract/register", json=contract_payload(created_property["id"], created_client["id"]), headers=auth_headers)
+    client.post("/contract/register", json=contract_payload(created_property["id"], created_client["id"], status="pending"), headers=auth_headers)
+    response = client.get(f"/contract/get/all?status=pending&client_id={created_client['id']}", headers=auth_headers)
+    assert [c["status"] for c in response.json()["items"]] == ["pending"]

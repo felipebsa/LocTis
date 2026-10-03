@@ -4,12 +4,13 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from dotenv import load_dotenv
 import os
-from backend.app.database import Base
-from backend.app.models.client import Client
-from backend.app.models.contract import Contract
-from backend.app.models.landlord import Landlord
-from backend.app.models.property import Property
-from backend.app.models.service import Service
+from app.database import Base
+from app.models.client import Client
+from app.models.contract import Contract
+from app.models.landlord import Landlord
+from app.models.property import Property
+from app.models.service import Service
+from app.models.note import Note
 from alembic import context
 
 load_dotenv()
@@ -24,30 +25,11 @@ if config.config_file_name is not None:
 
 config.set_main_option("sqlalchemy.url", os.getenv("DATABASE_URL"))
 
-# add your model's MetaData object here
-# for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
 target_metadata = Base.metadata
-
-# other values from the config, defined by the needs of env.py,
-# can be acquired:
-# my_important_option = config.get_main_option("my_important_option")
-# ... etc.
 
 
 def run_migrations_offline() -> None:
-    """Run migrations in 'offline' mode.
-
-    This configures the context with just a URL
-    and not an Engine, though an Engine is acceptable
-    here as well.  By skipping the Engine creation
-    we don't even need a DBAPI to be available.
-
-    Calls to context.execute() here emit the given string to the
-    script output.
-
-    """
+    """Run migrations in 'offline' mode."""
     url = config.get_main_option("sqlalchemy.url")
     context.configure(
         url=url,
@@ -61,12 +43,7 @@ def run_migrations_offline() -> None:
 
 
 def run_migrations_online() -> None:
-    """Run migrations in 'online' mode.
-
-    In this scenario we need to create an Engine
-    and associate a connection with the context.
-
-    """
+    """Run migrations in 'online' mode."""
     connectable = engine_from_config(
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",

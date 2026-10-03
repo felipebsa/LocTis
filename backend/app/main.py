@@ -8,6 +8,7 @@ from app.routes.service import router as service_router
 from app.routes.property import router as property_router
 from app.routes.client import router as client_router
 from app.routes.contract import router as contract_router
+from app.routes.note import router as note_router
 
 #models
 from app.models.landlord import  Landlord
@@ -15,6 +16,7 @@ from app.models.service import Service
 from app.models.property import Property
 from app.models.client import Client
 from app.models.contract import Contract
+from app.models.note import Note
 
 app = FastAPI()
 
@@ -32,3 +34,4 @@ app.include_router(service_router)
 app.include_router(property_router)
 app.include_router(client_router)
 app.include_router(contract_router)
+app.include_router(note_router)

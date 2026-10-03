@@ -2,6 +2,8 @@ from sqlalchemy.orm import Mapped, mapped_column
 from app.database import Base
 from datetime import datetime
 from sqlalchemy import func, ForeignKey, Enum as SQLEnum
+from sqlalchemy.dialects.postgresql import JSONB
+from typing import Optional
 from app.core.enums import PropertyKind, PropertyStatus
 
 class Property(Base):
@@ -13,4 +15,5 @@ class Property(Base):
     cep: Mapped[str] = mapped_column()
     kind: Mapped[PropertyKind] = mapped_column(SQLEnum(PropertyKind)) #enum
     status: Mapped[PropertyStatus] = mapped_column(SQLEnum(PropertyStatus)) #enum
+    extra_data: Mapped[Optional[dict]] = mapped_column(JSONB) #JSONB: campos customizados por tipo de imóvel
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())

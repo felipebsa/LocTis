@@ -23,3 +23,9 @@ class ServiceStatus(enum.Enum):
     IN_PROGRESS = "in_progress"
     COMPLETED = "completed"
     CANCELLED = "cancelled"
+
+class NoteEntityType(enum.Enum):
+    PROPERTY = "property"
+    CLIENT = "client"
+    CONTRACT = "contract"
+    SERVICE = "service"
