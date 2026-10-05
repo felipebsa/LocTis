@@ -14,14 +14,14 @@ def _create_properties(headers, n):
 def test_default_page_shape(auth_headers):
     _create_properties(auth_headers, 3)
     body = client.get("/property/get/all", headers=auth_headers).json()
-    assert set(body.keys()) == {"items", "page_atual", "page_max"}
+    assert set(body.keys()) == {"items", "page_atual", "page_max", "total"}
     assert body["page_atual"] == 1
     assert body["page_max"] == 1
     assert len(body["items"]) == 3
 
 def test_empty_list_has_page_max_one(auth_headers):
     body = client.get("/property/get/all", headers=auth_headers).json()
-    assert body == {"items": [], "page_atual": 1, "page_max": 1}
+    assert body == {"items": [], "page_atual": 1, "page_max": 1, "total": 0}
 
 def test_limit_and_page(auth_headers):
     _create_properties(auth_headers, 5)

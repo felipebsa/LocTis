@@ -84,6 +84,11 @@ def update_service_by_put(id: int, service: SchemaServiceUpdate, db: Session = D
     if not db_service:
         raise HTTPException(status_code=404, detail="Service not found")
 
+    query_p = select(Property).where(and_(Property.id==service.property_id, Property.landlord_id==cl.id))
+    if db.execute(query_p).scalar_one_or_none() is None:
+        raise HTTPException(status_code=404, detail="not exist this property id")
+
+    db_service.property_id = service.property_id
     db_service.name = service.name
     db_service.description = service.description
     db_service.value = service.value

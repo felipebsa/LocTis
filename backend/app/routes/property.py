@@ -9,6 +9,7 @@ from app.core.security import get_current_user
 from app.core.enums import PropertyStatus, PropertyKind, NoteEntityType
 from app.core.pagination import Pagination, Page, paginate
 from app.core.tenant import delete_entity_notes
+from sqlalchemy.exc import IntegrityError
 
 router = APIRouter(prefix="/property", tags=["property"])
 
@@ -72,7 +73,11 @@ def delete_property(id: int, db: Session = Depends(get_db), cl=Depends(get_curre
         raise HTTPException(status_code=404, detail="Property not found")
     delete_entity_notes(db, NoteEntityType.PROPERTY, id, cl.id)
     db.delete(db_property)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=409, detail="Property has contracts or services linked to it")
     return
 
 @router.put("/update/put/{id}", response_model=SchemaPropertyResponse)

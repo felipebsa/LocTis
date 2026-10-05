@@ -30,6 +30,7 @@ class Page(BaseModel, Generic[T]):
     items: list[T]
     page_atual: int
     page_max: int
+    total: int
 
 def paginate(db: Session, query, pagination: Pagination) -> dict:
     total = db.execute(
@@ -40,4 +41,5 @@ def paginate(db: Session, query, pagination: Pagination) -> dict:
         "items": items,
         "page_atual": pagination.page,
         "page_max": max(1, ceil(total / pagination.limit)),
+        "total": total,
     }

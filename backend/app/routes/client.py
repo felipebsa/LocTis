@@ -63,7 +63,11 @@ def delete_client(id: int, db: Session = Depends(get_db), cl=Depends(get_current
         raise HTTPException(status_code=404, detail="Client not found")
     delete_entity_notes(db, NoteEntityType.CLIENT, id, cl.id)
     db.delete(db_client)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=409, detail="Client has contracts linked to it")
     return
 
 @router.put("/update/put/{id}", response_model=SchemaClientResponse)

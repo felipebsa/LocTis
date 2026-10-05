@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.landlord import Landlord
-from app.core.security import verify_password, create_access_token, hash_password
+from app.core.security import verify_password, create_access_token, hash_password, get_current_user
 from app.schemas.landlord import SchemaLandlordCreate, SchemaLandlordResponse
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -33,3 +33,7 @@ def create_landlord(landlord: SchemaLandlordCreate, db: Session = Depends(get_db
     db.commit()
     db.refresh(post_landlord)
     return post_landlord
+
+@router.get("/me", response_model=SchemaLandlordResponse)
+def me(cl=Depends(get_current_user)):
+    return cl
