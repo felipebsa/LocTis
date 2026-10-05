@@ -86,3 +86,25 @@ def test_filter_services_by_status_and_property(auth_headers, created_property):
     client.post("/service/register", json=service_payload(created_property["id"], status="completed"), headers=auth_headers)
     response = client.get(f"/service/get/all?status=completed&property_id={created_property['id']}", headers=auth_headers)
     assert [s["status"] for s in response.json()["items"]] == ["completed"]
+def test_update_service_put_changes_property(auth_headers, created_property):
+    other = client.post("/property/register", json={
+        "address": "Av. Brasil, 500", "cep": "20000-000", "kind": "house", "status": "available"
+    }, headers=auth_headers).json()
+    created = client.post("/service/register", json=service_payload(created_property["id"]), headers=auth_headers).json()
+
+    response = client.put(f"/service/update/put/{created['id']}", json=service_payload(other["id"]), headers=auth_headers)
+    assert response.status_code == 200
+    assert response.json()["property_id"] == other["id"]
+
+def test_update_service_put_invalid_property(auth_headers, created_property):
+    created = client.post("/service/register", json=service_payload(created_property["id"]), headers=auth_headers).json()
+    response = client.put(f"/service/update/put/{created['id']}", json=service_payload(9999), headers=auth_headers)
+    assert response.status_code == 404
+
+def test_update_service_put_other_landlord_property(auth_headers, auth_headers_other, created_property):
+    created = client.post("/service/register", json=service_payload(created_property["id"]), headers=auth_headers).json()
+    foreign = client.post("/property/register", json={
+        "address": "Rua da Carla, 1", "cep": "30000-000", "kind": "house", "status": "available"
+    }, headers=auth_headers_other).json()
+    response = client.put(f"/service/update/put/{created['id']}", json=service_payload(foreign["id"]), headers=auth_headers)
+    assert response.status_code == 404

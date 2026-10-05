@@ -97,3 +97,20 @@ def test_filter_contracts_by_status_and_client(auth_headers, created_property, c
     client.post("/contract/register", json=contract_payload(created_property["id"], created_client["id"], status="pending"), headers=auth_headers)
     response = client.get(f"/contract/get/all?status=pending&client_id={created_client['id']}", headers=auth_headers)
     assert [c["status"] for c in response.json()["items"]] == ["pending"]
+
+def test_delete_property_with_contract_returns_409(auth_headers, created_property, created_client):
+    client.post("/contract/register", json=contract_payload(created_property["id"], created_client["id"]), headers=auth_headers)
+    response = client.delete(f"/property/delete/{created_property['id']}", headers=auth_headers)
+    assert response.status_code == 409
+
+    # o rollback deve manter o imóvel no banco
+    check = client.get(f"/property/get/id/{created_property['id']}", headers=auth_headers)
+    assert check.status_code == 200
+
+def test_delete_client_with_contract_returns_409(auth_headers, created_property, created_client):
+    client.post("/contract/register", json=contract_payload(created_property["id"], created_client["id"]), headers=auth_headers)
+    response = client.delete(f"/client/delete/{created_client['id']}", headers=auth_headers)
+    assert response.status_code == 409
+
+    check = client.get(f"/client/get/id/{created_client['id']}", headers=auth_headers)
+    assert check.status_code == 200

@@ -14,3 +14,6 @@ Thumbs.db
 
 #xml
 repomix-output.xml
+
+!.env.local.example
+!.env.example

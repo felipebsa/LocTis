@@ -1,0 +1,128 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --radius-lg: 0.75rem;
+  --radius-md: 0.625rem;
+  --radius-sm: 0.45rem;
+}
+
+:root {
+  color-scheme: dark;
+  --background: #060817;
+  --foreground: #f5f1e8;
+  --card: #0b0e22;
+  --card-foreground: #f5f1e8;
+  --primary: #5146d8;
+  --primary-foreground: #faf9ff;
+  --muted: #11152d;
+  --muted-foreground: #8b91a4;
+  --border: rgba(179, 184, 222, 0.1);
+  --input: rgba(179, 184, 222, 0.12);
+  --ring: #7773ef;
+  --loctis-gold: #d4a72c;
+  --loctis-gold-soft: #e5be55;
+  --loctis-gold-muted: #806c3d;
+  --loctis-success: #35b8a0;
+  --loctis-warning: #c99545;
+  --loctis-danger: #bd6870;
+  --loctis-surface-raised: rgba(14, 17, 40, 0.86);
+  --loctis-surface-soft: rgba(255, 255, 255, 0.028);
+  --loctis-focus: rgba(99, 91, 255, 0.34);
+  --loctis-radius-card: 0.95rem;
+}
+
+* { box-sizing: border-box; }
+html { background: #050715; }
+body { margin: 0; min-width: 320px; background: #050715; color: #f1f3fa; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-feature-settings: "cv02", "cv03", "cv04", "cv11"; }
+.loctis-shell h1, .loctis-shell h2, .loctis-shell h3 { letter-spacing: -0.025em; }
+.loctis-shell h1 { text-wrap: balance; }
+.loctis-shell .text-\[10px\] { letter-spacing: .12em; }
+
+.loctis-shell {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+background:
+  radial-gradient(ellipse 72% 56% at 52% 0%, rgba(54, 62, 150, 0.14), transparent 70%),
+  radial-gradient(ellipse 42% 58% at 96% 82%, rgba(212, 167, 44, 0.055), transparent 72%),
+  radial-gradient(ellipse 45% 42% at 6% 42%, rgba(42, 47, 116, 0.08), transparent 72%),
+  linear-gradient(115deg, #050714 0%, #07091a 52%, #080a1d 100%);
+}
+
+.loctis-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.08;
+  background-image:
+    linear-gradient(116deg, transparent 0 71%, rgba(107, 111, 197, 0.08) 71.1%, transparent 71.25%),
+    linear-gradient(74deg, transparent 0 82%, rgba(107, 111, 197, 0.06) 82.1%, transparent 82.25%),
+    repeating-linear-gradient(90deg, transparent 0 92px, rgba(117, 124, 198, 0.025) 93px, transparent 94px);
+  mask-image: linear-gradient(to bottom, transparent, black 22%, black 72%, transparent);
+}
+
+.loctis-shell::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 25%;
+  right: 4%;
+  width: 36vw;
+  height: 18vw;
+  pointer-events: none;
+  opacity: 0.14;
+  background: repeating-linear-gradient(120deg, transparent 0 28px, rgba(120, 126, 218, 0.08) 29px, transparent 30px);
+  transform: perspective(500px) rotateX(55deg) rotateZ(-8deg);
+  filter: blur(0.5px);
+}
+
+.loctis-shell aside { background: rgba(5, 7, 20, 0.72) !important; }
+.loctis-shell header { background: rgba(7, 9, 24, 0.76) !important; }
+.loctis-shell [class*="bg-[#0b0e22]"] { box-shadow: 0 18px 50px rgba(1, 3, 14, 0.16), inset 0 1px 0 rgba(255,255,255,0.018); transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease, background-color .2s ease; }
+.loctis-shell .loctis-card { border-radius: var(--loctis-radius-card); background-image: linear-gradient(145deg, rgba(255,255,255,.018), transparent 48%); }
+.loctis-shell .loctis-card:focus-visible { outline: 2px solid var(--loctis-focus); outline-offset: 3px; }
+.loctis-shell .loctis-card button { transition: color .2s ease, background-color .2s ease, border-color .2s ease; }
+.loctis-shell .loctis-card button:focus-visible { outline: 2px solid var(--loctis-focus); outline-offset: 2px; }
+.loctis-shell [class*="border-white/[0.07]"] { border-color: rgba(179, 184, 222, 0.085); }
+.loctis-shell .loctis-card:hover { border-color: rgba(212, 167, 44, 0.45) !important; transform: translateY(-2px); box-shadow: 0 20px 55px rgba(30, 24, 120, .2), 0 0 0 1px rgba(212, 167, 44, .08); }
+.loctis-shell .loctis-card:hover::before { opacity: 1; }
+
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+
+/* LocTis semantic refinements: warm typography, restrained status colors, and indigo-led interaction. */
+.loctis-shell .text-white,
+.loctis-shell .text-slate-100,
+.loctis-shell .text-slate-200 { color: #f5f1e8; }
+.loctis-shell .text-slate-300 { color: #d8d5cb; }
+.loctis-shell .text-slate-500 { color: #8b91a4; }
+.loctis-shell .text-slate-600 { color: #686f83; }
+.loctis-shell .text-slate-700 { color: #535a70; }
+.loctis-shell .text-teal-300 { color: var(--loctis-success); }
+.loctis-shell .bg-teal-300 { background-color: var(--loctis-success); }
+
+.loctis-shell .text-indigo-400 { color: #635bff; }
+.loctis-shell .text-indigo-200 { color: #c9c5ff; }
+.loctis-shell .bg-indigo-400 { background-color: #635bff; }
+.loctis-shell .border-indigo-400\/20 { border-color: rgba(99, 91, 255, 0.24); }
+.loctis-shell input:focus,
+.loctis-shell select:focus { border-color: rgba(212, 167, 44, 0.72); box-shadow: 0 0 0 3px rgba(212, 167, 44, 0.12); }
+
+::selection { background: rgba(98, 94, 232, 0.35); color: #fffaf0; }
